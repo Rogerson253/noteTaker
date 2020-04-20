@@ -4,7 +4,8 @@
 // ==============================================================================
 
 var express = require("express");
-var path = require("path");
+
+
 
 // ==============================================================================
 // EXPRESS CONFIGURATION
@@ -26,22 +27,13 @@ app.use(express.json());
 // The below points our server to a series of "route" files.
 // These routes give our server a "map" of how to respond when users visit or request data from various URLs.
 // ================================================================================
-
-app.get("/notes", function(req, res) {
-    // res.send("Welcome to the Star Wars Page!")
-    res.sendFile(path.join(__dirname, "public", "notes.html"));
-  });
-
-  app.get("*", function(req, res) {
-    // res.send("Welcome to the Star Wars Page!")
-    res.sendFile(path.join(__dirname, "public", "index.html"));
-  });
+require("./routes/htmlRoutes")(app);
 
 // =============================================================================
 // LISTENER
 // The below code effectively "starts" our server
 // =============================================================================
 
-app.listen(PORT, function() {
+app.listen(PORT, () => {
   console.log("App listening on PORT: " + PORT);
 });
