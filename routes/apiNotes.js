@@ -1,27 +1,39 @@
-var fs = require("fs");
-var router = require("express").Router()
-var util = require('util');
-var readFileAsync = util.promisify(fs.readFile);
-var writeFileAsync = util.promisify(fs.writeFile);  
+let fs = require("fs");
+let router = require("express").Router()
+let util = require('util');
+let readFileAsync = util.promisify(fs.readFile);
+let writeFileAsync = util.promisify(fs.writeFile);  
 
 router.get("/api/notes", async function(req, res) {
     const readNotes = await readFileAsync("./db/db.json", "utf8");
-    console.log("Here!", readNotes);
     res.send(JSON.parse(readNotes))
 });
 
 router.post("/api/notes", async function(req, res) {
-    console.log(req.body)
+
     const readNotes = await readFileAsync("./db/db.json", "utf8");
-    var posting = JSON.parse(readNotes);
-    var newNote = {
+    let posting = JSON.parse(readNotes);
+    let newNote = {
     title: req.body.title,
     text: req.body.text
-    }
+    };
+
     posting.push(newNote);
     console.log(posting);
+    console.log("===============")
+    let done = await writeFileAsync("./db/db.json", JSON.stringify(posting));
+    
+    console.log(posting);
+    
+    let ids = [];
+    for(let i = 0; i < posting.length; i++){
+        ids.push(posting[i].id)
+    };
 
-    var done = await writeFileAsync("./db/db.json", JSON.stringify(posting));
-    res.send("Note Sent!")
+    let idRandom = Math.max.apply(null, ids);
+    newNote.id = idRandom + 1;
+
+    res.send("Note Sent!");
 });
+
 module.exports = router;

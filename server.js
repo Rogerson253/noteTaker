@@ -26,8 +26,7 @@ app.use(express.json());
 // The below points our server to a series of "route" files.
 // These routes give our server a "map" of how to respond when users visit or request data from various URLs.
 // ================================================================================
-// require("./routes/htmlRoutes")(app);
-// require("./routes/apiNotes")(app, fs)
+
 
 const apiRoutes = require("./routes/apiNotes")
 const htmlRoutes = require("./routes/htmlRoutes")
